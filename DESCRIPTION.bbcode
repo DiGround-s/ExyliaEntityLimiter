@@ -1,0 +1,186 @@
+[CENTER][SIZE=7][B][COLOR=#8a51c4]Exylia Entity Limiter[/COLOR][/B][/SIZE]
+[SIZE=4][COLOR=#b9a5cc]Ultra-Efficient Entity Management for Your Server[/COLOR][/SIZE]
+
+[IMG]https://via.placeholder.com/800x200/8a51c4/e7cfff?text=Exylia+Entity+Limiter[/IMG]
+
+[SIZE=5][B][COLOR=#aa76de]⚡ Why Choose Exylia Entity Limiter?[/COLOR][/B][/SIZE][/CENTER]
+
+[COLOR=#e7cfff]Tired of server lag caused by excessive entities? Exylia Entity Limiter is your ultimate solution for maintaining optimal server performance while keeping your worlds clean and lag-free.[/COLOR]
+
+[CENTER][SIZE=5][B][COLOR=#8a51c4]✨ Key Features[/COLOR][/B][/SIZE][/CENTER]
+
+[B][COLOR=#8fffc1]⚡ Hybrid Protection System[/COLOR][/B]
+[LIST]
+[*][COLOR=#e7cfff]Reactive limiting - Prevents entity spawns when limits are reached[/COLOR]
+[*][COLOR=#e7cfff]Proactive cleanup - Automated periodic cleanup tasks[/COLOR]
+[/LIST]
+
+[B][COLOR=#8fffc1]🎯 Smart Entity Management[/COLOR][/B]
+[LIST]
+[*][COLOR=#e7cfff]Per-entity-type limits - Configure limits for each entity type[/COLOR]
+[*][COLOR=#e7cfff]Chunk-based system - Maximum efficiency aligned with Minecraft architecture[/COLOR]
+[*][COLOR=#e7cfff]Intelligent removal strategies - Choose how entities are removed (farthest, random, oldest)[/COLOR]
+[/LIST]
+
+[B][COLOR=#8fffc1]🛡️ Protection Features[/COLOR][/B]
+[LIST]
+[*][COLOR=#e7cfff]Bypass custom named entities - Keep your named pets safe[/COLOR]
+[*][COLOR=#e7cfff]Bypass villagers with professions - Protect your trading halls[/COLOR]
+[*][COLOR=#e7cfff]Bypass tagged entities - Use scoreboard tags for protection[/COLOR]
+[/LIST]
+
+[B][COLOR=#8fffc1]⚙️ Advanced Technology[/COLOR][/B]
+[LIST]
+[*][COLOR=#e7cfff]Multi-level caching with Caffeine - Lightning-fast performance[/COLOR]
+[*][COLOR=#e7cfff]Async-first threading - No main thread blocking[/COLOR]
+[*][COLOR=#e7cfff]Object pooling - Reduced garbage collection pressure[/COLOR]
+[*][COLOR=#e7cfff]Google Guice dependency injection - Clean, maintainable code[/COLOR]
+[/LIST]
+
+[B][COLOR=#8fffc1]🎨 Beautiful Interface[/COLOR][/B]
+[LIST]
+[*][COLOR=#e7cfff]MiniMessage support - Stunning gradients and colors[/COLOR]
+[*][COLOR=#e7cfff]Clickable messages - Teleport to chunks with one click[/COLOR]
+[*][COLOR=#e7cfff]Pagination system - Easy navigation through data[/COLOR]
+[*][COLOR=#e7cfff]Real-time alerts - Get notified when entities are removed[/COLOR]
+[/LIST]
+
+[B][COLOR=#8fffc1]🎪 Visual Effects[/COLOR][/B]
+[LIST]
+[*][COLOR=#e7cfff]Particle effects on entity removal - Configurable particle types[/COLOR]
+[*][COLOR=#e7cfff]Smart particle queue - Prevents particle spam lag[/COLOR]
+[/LIST]
+
+[CENTER][SIZE=5][B][COLOR=#8a51c4]📝 Commands[/COLOR][/B][/SIZE][/CENTER]
+
+[CODE]
+/entitylimiter reload      - Reload configuration
+/entitylimiter stats       - View cache statistics
+/entitylimiter cleanup     - Manually cleanup current chunk
+/entitylimiter info        - View current chunk entity information
+/entitylimiter list [page] - List all loaded chunks sorted by priority
+/entitylimiter teleport <world> <x> <z> - Teleport to specific chunk
+/entitylimiter alert       - Toggle entity removal notifications
+[/CODE]
+
+[CENTER][SIZE=5][B][COLOR=#8a51c4]🔐 Permissions[/COLOR][/B][/SIZE][/CENTER]
+
+[CODE]
+entitylimiter.*         - All permissions
+entitylimiter.reload    - Reload configuration
+entitylimiter.stats     - View statistics
+entitylimiter.cleanup   - Manual cleanup
+entitylimiter.info      - View chunk info
+entitylimiter.list      - List chunks
+entitylimiter.teleport  - Teleport to chunks
+entitylimiter.alert     - Toggle alerts
+[/CODE]
+
+[CENTER][SIZE=5][B][COLOR=#8a51c4]⚙️ Configuration[/COLOR][/B][/SIZE][/CENTER]
+
+[SPOILER="Example Configuration"]
+[CODE]
+entity-limiter:
+  cleanup-interval: 100  # ticks (5 seconds)
+  debug: false
+  removal-strategy: FARTHEST_FROM_PLAYERS  # FARTHEST_FROM_PLAYERS, RANDOM, OLDEST
+  particle:
+    enabled: true
+    type: SMOKE
+    count: 10
+  bypass:
+    custom-named: true
+    villagers-with-profession: true
+    bypass-tagged-entities: true
+
+limits:
+  ZOMBIE: 10
+  SKELETON: 10
+  CREEPER: 8
+  SPIDER: 10
+  ENDERMAN: 5
+  ITEM: 50
+  DROPPED_ITEM: 50
+  default: -1  # -1 = no limit
+[/CODE]
+[/SPOILER]
+
+[CENTER][SIZE=5][B][COLOR=#8a51c4]🎯 Removal Strategies[/COLOR][/B][/SIZE][/CENTER]
+
+[B][COLOR=#59a4ff]FARTHEST_FROM_PLAYERS[/COLOR][/B] [COLOR=#b9a5cc](Recommended)[/COLOR]
+[COLOR=#e7cfff]Removes entities farthest from players first, minimizing player impact.[/COLOR]
+
+[B][COLOR=#59a4ff]RANDOM[/COLOR][/B]
+[COLOR=#e7cfff]Randomly removes entities for balanced distribution.[/COLOR]
+
+[B][COLOR=#59a4ff]OLDEST[/COLOR][/B]
+[COLOR=#e7cfff]Removes oldest entities first, keeping newer spawns alive.[/COLOR]
+
+[CENTER][SIZE=5][B][COLOR=#8a51c4]📊 API for Developers[/COLOR][/B][/SIZE][/CENTER]
+
+[COLOR=#e7cfff]Exylia Entity Limiter provides a comprehensive API for developers:[/COLOR]
+
+[CODE]
+EntityLimiterAPI api = (EntityLimiterAPI) Bukkit.getPluginManager().getPlugin("ExyliaEntityLimiter");
+
+// Check chunk limits
+api.checkChunkLimits(chunk).thenAccept(result -> {
+    if (result.hasExceeded()) {
+        // Handle exceeded limits
+    }
+});
+
+// Get entity counts
+api.getEntityCount(chunk).thenAccept(counts -> {
+    // Process entity counts
+});
+
+// Listen to events
+@EventHandler
+public void onEntityRemoved(EntityRemovedEvent event) {
+    Chunk chunk = event.getChunk();
+    List<Entity> removed = event.getEntities();
+    // Handle entity removal
+}
+[/CODE]
+
+[CENTER][SIZE=5][B][COLOR=#8a51c4]📦 Technical Details[/COLOR][/B][/SIZE][/CENTER]
+
+[LIST]
+[*][B][COLOR=#59a4ff]Minecraft Version:[/COLOR][/B] [COLOR=#e7cfff]1.18+ (Paper/Spigot)[/COLOR]
+[*][B][COLOR=#59a4ff]Dependencies:[/COLOR][/B] [COLOR=#e7cfff]None! All libraries are included[/COLOR]
+[*][B][COLOR=#59a4ff]Performance:[/COLOR][/B] [COLOR=#e7cfff]Async-first design, minimal main thread usage[/COLOR]
+[*][B][COLOR=#59a4ff]Memory:[/COLOR][/B] [COLOR=#e7cfff]Optimized with caching and object pooling[/COLOR]
+[/LIST]
+
+[CENTER][SIZE=5][B][COLOR=#8a51c4]🚀 Why It's Efficient[/COLOR][/B][/SIZE][/CENTER]
+
+[B][COLOR=#8fffc1]1. Chunk-Based System[/COLOR][/B]
+[COLOR=#e7cfff]Aligned with Minecraft's architecture for maximum performance. Chunks are the natural unit of entity management.[/COLOR]
+
+[B][COLOR=#8fffc1]2. Multi-Level Caching[/COLOR][/B]
+[COLOR=#e7cfff]Using Caffeine cache with configurable TTL reduces redundant calculations and database queries.[/COLOR]
+
+[B][COLOR=#8fffc1]3. Async-First Threading[/COLOR][/B]
+[COLOR=#e7cfff]All heavy operations run asynchronously using ForkJoinPool and custom thread pools. Main thread only touches Bukkit API.[/COLOR]
+
+[B][COLOR=#8fffc1]4. Object Pooling[/COLOR][/B]
+[COLOR=#e7cfff]ChunkKey pooling reduces garbage collection pressure and memory allocations.[/COLOR]
+
+[B][COLOR=#8fffc1]5. Fast-Path Optimization[/COLOR][/B]
+[COLOR=#e7cfff]Immediate returns for entity types without limits avoid unnecessary processing.[/COLOR]
+
+[B][COLOR=#8fffc1]6. Batch Processing[/COLOR][/B]
+[COLOR=#e7cfff]Entities are grouped by chunk before removal, reducing scheduler overhead.[/COLOR]
+
+[CENTER][SIZE=5][B][COLOR=#8a51c4]💬 Support[/COLOR][/B][/SIZE][/CENTER]
+
+[COLOR=#e7cfff]Need help? Visit our support at:[/COLOR]
+[URL='https://link.exylia.net/@services'][COLOR=#59a4ff]https://link.exylia.net/@services[/COLOR][/URL]
+
+[CENTER][SIZE=5][B][COLOR=#8a51c4]⭐ Join Exylia Network[/COLOR][/B][/SIZE][/CENTER]
+
+[COLOR=#e7cfff]Experience the power of optimized Minecraft servers with Exylia's suite of premium plugins.[/COLOR]
+
+[SIZE=3][COLOR=#b9a5cc]Made with ❤️ by DiGround | Exylia Network[/COLOR][/SIZE]
+[/CENTER]

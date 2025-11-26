@@ -1,0 +1,48 @@
+name: ExyliaEntityLimiter
+version: '${version}'
+main: net.exylia.exyliaEntityLimiter.ExyliaEntityLimiter
+api-version: '1.18'
+authors: [ DiGround ]
+description: Ultra-efficient entity limiter to reduce server lag
+website: https://link.exylia.net/@services
+
+permissions:
+  entitylimiter.*:
+    description: All EntityLimiter permissions
+    children:
+      entitylimiter.reload: true
+      entitylimiter.stats: true
+      entitylimiter.cleanup: true
+      entitylimiter.info: true
+      entitylimiter.list: true
+      entitylimiter.teleport: true
+      entitylimiter.alert: true
+  entitylimiter.reload:
+    description: Reload configuration
+    default: op
+  entitylimiter.stats:
+    description: View cache statistics
+    default: op
+  entitylimiter.cleanup:
+    description: Manually cleanup chunks
+    default: op
+  entitylimiter.info:
+    description: View chunk entity information
+    default: op
+  entitylimiter.list:
+    description: List all loaded chunks with entity counts
+    default: op
+  entitylimiter.teleport:
+    description: Teleport to specific chunks
+    default: op
+  entitylimiter.alert:
+    description: Toggle entity removal alerts
+    default: op
+
+libraries:
+  - 'net.kyori:adventure-platform-bukkit:4.3.4'
+  - 'com.github.ben-manes.caffeine:caffeine:3.2.2'
+  - 'com.google.inject:guice:7.0.0'
+  - 'io.github.revxrsal:lamp.common:4.0.0-rc.14'
+  - 'io.github.revxrsal:lamp.bukkit:4.0.0-rc.14'
+  - 'io.github.revxrsal:lamp.brigadier:4.0.0-rc.14'

@@ -1,0 +1,170 @@
+# ===========================================
+#     ExyliaEntityLimiter Configuration
+# ===========================================
+# Ultra-efficient entity limiter to reduce server lag
+# https://link.exylia.net/@services
+# ===========================================
+
+entity-limiter:
+  # How often to run the cleanup task (in ticks, 20 ticks = 1 second)
+  # Lower values = more frequent checks but more CPU usage
+  # Recommended: 100 (5 seconds)
+  cleanup-interval: 100
+
+  # Enable debug logging
+  # Set to true to see detailed information about entity removals
+  debug: false
+
+  # Strategy for choosing which entities to remove when limit is exceeded
+  # Options:
+  #   FARTHEST_FROM_PLAYERS - Remove entities farthest from players (best user experience)
+  #   OLDEST_FIRST - Remove entities that have existed longest
+  #   RANDOM - Random removal (fastest performance)
+  #   LOWEST_HEALTH - Remove living entities with lowest health first
+  removal-strategy: FARTHEST_FROM_PLAYERS
+
+  # Particle effect settings
+  particle:
+    # Enable particle effect when removing entities
+    enabled: true
+
+    # Particle type to spawn
+    # See: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
+    # Common options: SMOKE, CLOUD, FLAME, PORTAL, EXPLOSION
+    type: SMOKE
+
+    # Number of particles to spawn
+    count: 10
+
+  # Bypass settings - entities matching these conditions will NOT be removed
+  bypass:
+    # Bypass entities with custom names (renamed with a name tag item)
+    # Example: A zombie named "Bob" with a name tag will not be removed
+    custom-named: true
+
+    # Bypass villagers with professions (don't remove employed villagers)
+    # Unemployed villagers (NONE profession) can still be removed
+    villagers-with-profession: true
+
+    # Bypass entities with ANY scoreboard tag (invisible tags added via commands)
+    # Example: /tag @e[type=zombie,limit=1] add protected
+    # If enabled, any entity with at least one scoreboard tag will be protected
+    # Set to false to disable scoreboard tag-based bypass entirely
+    bypass-tagged-entities: true
+
+# ===========================================
+#           Entity Limits (per chunk)
+# ===========================================
+# Set the maximum number of each entity type per chunk
+# Use EntityType names from: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html
+# Set to -1 for no limit on that entity type
+# If an entity type is not listed, it will use the 'default' value
+
+limits:
+  VILLAGER: 5
+
+  # === Hostile Mobs ===
+  ZOMBIE: 5
+  SKELETON: 5
+  CREEPER: 5
+  SPIDER: 5
+  CAVE_SPIDER: 5
+  ENDERMAN: 5
+  WITCH: 3
+  SLIME: 8
+  MAGMA_CUBE: 8
+  BLAZE: 5
+  GHAST: 3
+  PHANTOM: 5
+  DROWNED: 5
+  HUSK: 5
+  STRAY: 5
+  SILVERFISH: 5
+  ENDERMITE: 5
+  VEX: 5
+  VINDICATOR: 5
+  EVOKER: 3
+  PILLAGER: 5
+  RAVAGER: 3
+  ZOMBIE_VILLAGER: 5
+
+  # === Passive Mobs ===
+  COW: 5
+  PIG: 5
+  SHEEP: 5
+  CHICKEN: 5
+  HORSE: 5
+  DONKEY: 5
+  MULE: 5
+  RABBIT: 5
+  WOLF: 5
+  CAT: 5
+  PARROT: 5
+  OCELOT: 5
+  FOX: 5
+  BEE: 5
+  PANDA: 5
+  POLAR_BEAR: 5
+  LLAMA: 5
+  TURTLE: 5
+  DOLPHIN: 5
+  COD: 5
+  SALMON: 5
+  TROPICAL_FISH: 5
+  PUFFERFISH: 5
+
+  # === Projectiles ===
+  ARROW: 5
+  SNOWBALL: 5
+  EGG: 5
+  TRIDENT: 5
+  SPECTRAL_ARROW: 5
+
+  # === Items & Other ===
+  DROPPED_ITEM: 30
+  EXPERIENCE_ORB: 20
+  ITEM_FRAME: 30
+  PAINTING: 10
+  ARMOR_STAND: 10
+  MINECART: 10
+  BOAT: 10
+
+  # Default limit for any entity type not listed above
+  # -1 = no limit (unlimited)
+  # 0 = completely disable spawning
+  default: -1
+
+# ===========================================
+#            Cache Configuration
+# ===========================================
+# Cache settings for optimal performance
+# Don't modify unless you know what you're doing
+
+cache:
+  # How long to cache chunk entity counts (in seconds)
+  # Higher values = better performance but less accurate counts
+  chunk-ttl-seconds: 5
+
+  # Maximum number of chunks to cache
+  chunk-max-size: 1000
+
+  # How long to cache entity bypass status (in seconds)
+  bypass-ttl-seconds: 30
+
+  # Maximum number of entities to cache bypass status for
+  bypass-max-size: 5000
+
+# ===========================================
+#          Threading Configuration
+# ===========================================
+# Thread pool settings for async operations
+# Adjust based on your server's CPU cores
+
+threading:
+  # Core number of threads for async operations
+  # Recommended: 2-4 for most servers
+  core-pool-size: 2
+
+  # Maximum number of threads
+  # Should be 2x core-pool-size
+  max-pool-size: 4

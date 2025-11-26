@@ -1,14 +1,20 @@
 package net.exylia.exyliaEntityLimiter.alert;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.Getter;
 import net.exylia.exyliaEntityLimiter.util.MessageUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -16,15 +22,62 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Singleton
 public class AlertManager {
+    private final JavaPlugin plugin;
+    private final File alertFile;
+
     @Getter
     private final Set<UUID> alertEnabled = ConcurrentHashMap.newKeySet();
 
+    @Inject
+    public AlertManager(JavaPlugin plugin) {
+        this.plugin = plugin;
+        this.alertFile = new File(plugin.getDataFolder(), "alerts.yml");
+        loadAlerts();
+    }
+
+    private void loadAlerts() {
+        if (!alertFile.exists()) {
+            return;
+        }
+
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(alertFile);
+        List<String> uuids = config.getStringList("enabled-players");
+
+        for (String uuidStr : uuids) {
+            try {
+                alertEnabled.add(UUID.fromString(uuidStr));
+            } catch (IllegalArgumentException e) {
+                plugin.getLogger().warning("Invalid UUID in alerts.yml: " + uuidStr);
+            }
+        }
+
+        plugin.getLogger().info("Loaded " + alertEnabled.size() + " players with alerts enabled");
+    }
+
+    private void saveAlerts() {
+        YamlConfiguration config = new YamlConfiguration();
+
+        List<String> uuids = alertEnabled.stream()
+            .map(UUID::toString)
+            .toList();
+
+        config.set("enabled-players", uuids);
+
+        try {
+            config.save(alertFile);
+        } catch (IOException e) {
+            plugin.getLogger().severe("Failed to save alerts.yml: " + e.getMessage());
+        }
+    }
+
     public void enableAlerts(Player player) {
         alertEnabled.add(player.getUniqueId());
+        saveAlerts();
     }
 
     public void disableAlerts(Player player) {
         alertEnabled.remove(player.getUniqueId());
+        saveAlerts();
     }
 
     public boolean hasAlertsEnabled(Player player) {

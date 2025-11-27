@@ -39,7 +39,7 @@ repositories {
 dependencies {
     compileOnly 'com.github.ben-manes.caffeine:caffeine:3.2.2'
     compileOnly 'com.google.inject:guice:5.1.0'
-    compileOnly 'io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.11.5'
     compileOnly 'io.github.revxrsal:lamp.common:4.0.0-rc.14'
     compileOnly 'io.github.revxrsal:lamp.bukkit:4.0.0-rc.14'

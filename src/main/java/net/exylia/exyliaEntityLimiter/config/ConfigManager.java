@@ -52,7 +52,7 @@ public class ConfigManager {
             particleType = Particle.valueOf(particleTypeStr);
         } catch (IllegalArgumentException e) {
             plugin.getLogger().warning("Invalid particle type: " + particleTypeStr + ", using SMOKE");
-            particleType = Particle.SMOKE;
+            particleType = Particle.SMOKE_LARGE;
         }
         int particleCount = file.getInt("entity-limiter.particle.count", 10);
 
